@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+	@apply text-start hover:bg-zinc-700 text-white py-2 px-4 rounded-lg border border-transparent hover:border-white/10 inline-block text-center;
+}
+
+.btn-icon {
+	@apply hover:bg-zinc-500/30 rounded-full w-9 h-9 inline-block text-center align-middle p-1;
+}
