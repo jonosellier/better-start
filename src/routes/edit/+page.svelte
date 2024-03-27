@@ -32,9 +32,9 @@
 	}
 </script>
 
-<h1 class="text-2xl pb-5">Edit</h1>
+<h1 class="text-2xl pb-5 ps-3">Edit</h1>
 <div class="w-screen max-w-2xl rounded-lg overflow-auto border border-zinc-600 mb-6">
-	<textarea class="bg-zinc-900 block font-mono w-full p-3" rows="40" bind:value={dataStr}
+	<textarea class="bg-zinc-900 block font-mono w-full p-3" rows="25" bind:value={dataStr}
 	></textarea>
 </div>
 {#each errors as error}
@@ -49,7 +49,7 @@
 		</div>
 	{/each}
 {/each}
-<button class="btn bg-blue-800 text-blue-200 hover:bg-blue-700" on:click={() => save()}>Save</button
+<button class="btn bg-indigo-800 text-indigo-100 hover:bg-indigo-700" on:click={() => save()}>Save Changes</button
 >
 
 <!-- <pre>{@debug $storageStore }</pre> -->

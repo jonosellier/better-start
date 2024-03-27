@@ -1,7 +1,4 @@
 <script>
-	export const prerender = true;
-	export const trailingSlash = 'always';
-
 	import Icon from '$lib/icon.svelte';
 	import '../app.css';
 	import { page } from '$app/stores';
@@ -14,17 +11,21 @@
 	import { onMount } from 'svelte';
 	import { initStorageStore, storageStore } from '$lib/stores/storage';
 
-	$: isHome = $page.url.pathname === '/';
+	let loaded = false;
+
+	$: isHome = $page.url.pathname === base+'/';
 
 	onMount(() => {
 		initStorageStore();
+		loaded = true;
 	});
 </script>
 
 {#if $storageStore}
 	<div class="text-white bg-zinc-900">
-		<div class="flex flex-col items-center justify-center h-dvh max-w-6xl mx-auto">
+		<div class="flex flex-col items-center justify-center h-dvh max-w-6xl mx-auto px-4">
 			<Greeter data={$storageStore} />
+			<hr class="my-8 border border-zinc-700 w-full">
 			<main class="grid grid-cols-4 gap-4 p-7 w-full">
 				{#each $storageStore.cards as card}
 					<HomeCard {card} />
@@ -42,12 +43,12 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="text-white bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 pt-14 duration-500"
+	class="text-white bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 py-14 duration-500"
 	class:closed={isHome}
 	on:click={() => goto(`${base}/`)}
 >
-	{#if !isHome}
-		<div class="max-w-3xl duration-300 p-5">
+	{#if loaded && !isHome}
+		<div class="max-w-3xl duration-300 p-5 max-h-full">
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<aside
 				class="p-5 rounded-xl bg-zinc-800 border border-zinc-400/20 relative"

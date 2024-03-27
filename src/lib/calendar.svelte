@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Icon from './icon.svelte';
 
 	export let date: Date;
+
+	export let calendarLink: string | undefined;
 
 	const months = [
 		'Jan',
@@ -27,9 +28,10 @@
 	});
 </script>
 
-<div class="flex items-center main-container">
-	<div
-		class="details-chip bg-white/10 text-white px-3 py-1 rounded-full text-lg overflow-hidden duration-150 me-2 text-sm"
+<a class="flex items-center main-container" href={calendarLink}>
+	<div class="w-2 relative h-6">
+		<div
+		class="absolute end-0 whitespace-nowrap details-chip bg-zinc-700 border border-zinc-600 text-white px-3 py-1 rounded-full text-lg w-content duration-150 me-2 text-sm"
 	>
 		<span class="inline-block"
 			>{date.toLocaleDateString('en-US', {
@@ -38,6 +40,7 @@
 				timeStyle: 'short'
 			})}</span
 		>
+	</div>
 	</div>
 	<div class="relative text-zinc-400 cal-holder">
 		<svg
@@ -58,7 +61,7 @@
 			<strong>{date?.getDate()}</strong>
 		</div>
 	</div>
-</div>
+</a>
 
 <style>
 	.cal-holder,
@@ -78,5 +81,9 @@
 	.main-container:not(:hover) .details-chip {
 		transform: translateX(32px);
 		opacity: 0;
+	}
+
+	.details-chip{
+		margin-left: -100%;
 	}
 </style>

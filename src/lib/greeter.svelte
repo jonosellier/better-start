@@ -3,7 +3,7 @@
 	import type { HomeLayout } from './types/home-layout';
 	import Icon from './icon.svelte';
 	import Calendar from './calendar.svelte';
-	export let data: Pick<HomeLayout, 'name' | 'greetingHours'>;
+	export let data: Pick<HomeLayout, 'name' | 'greetingHours' | 'calendarLink'>;
 
 	let now = new Date();
 
@@ -18,7 +18,7 @@
 
 <div class="flex justify-between items-center w-full px-12 mb-8">
 	<h1 class="text-4xl">{greeting.greeting} {data.name} {greeting.emoji ?? ''}</h1>
-	<Calendar date={now} />
+	<Calendar date={now} calendarLink={data.calendarLink} />
 </div>
 
 <style>

@@ -1,13 +1,12 @@
-import type { HomeLayout } from '$lib/types/home-layout';
+import { HomeLayout } from '$lib/types/home-layout';
 import { get, writable } from 'svelte/store';
-import { data as defaultData } from '$lib/data';
 
 export const storageStore = writable<HomeLayout>();
 
 export function initStorageStore() {
 	if (localStorage && !get(storageStore)) {
 		const dataAsStr = localStorage.getItem('userData');
-		const data: HomeLayout = JSON.parse(dataAsStr ?? 'null') ?? defaultData;
+		const data: HomeLayout = JSON.parse(dataAsStr ?? 'null') ?? new HomeLayout();
 		storageStore.set(data);
 		return true;
 	}
