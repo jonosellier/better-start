@@ -25,4 +25,5 @@ export class HomeLayout {
 	greetingHours: TimedGreeting[] = [new TimedGreeting()];
 	cards: HomeCard[] = [new HomeCard()];
 	calendarLink?: string;
+	cols: number = 4;
 }

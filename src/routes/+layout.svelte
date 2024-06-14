@@ -13,7 +13,7 @@
 
 	let loaded = false;
 
-	$: isHome = $page.url.pathname === base+'/';
+	$: isHome = $page.url.pathname === base + '/';
 
 	onMount(() => {
 		initStorageStore();
@@ -23,10 +23,13 @@
 
 {#if $storageStore}
 	<div class="text-white bg-zinc-900">
-		<div class="flex flex-col items-center justify-center h-dvh max-w-6xl mx-auto px-4">
+		<div
+			class="flex flex-col items-center justify-center h-dvh mx-auto px-4"
+			style:max-width={`${$storageStore.cols * 17 + 4.5}rem`}
+		>
 			<Greeter data={$storageStore} />
-			<hr class="my-8 border border-zinc-700 w-full">
-			<main class="grid grid-cols-4 gap-4 p-7 w-full">
+			<hr class="my-8 border border-zinc-700 w-full" />
+			<main class="flex flex-wrap gap-4 p-7 w-full">
 				{#each $storageStore.cards as card}
 					<HomeCard {card} />
 				{/each}

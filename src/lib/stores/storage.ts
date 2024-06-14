@@ -6,7 +6,10 @@ export const storageStore = writable<HomeLayout>();
 export function initStorageStore() {
 	if (localStorage && !get(storageStore)) {
 		const dataAsStr = localStorage.getItem('userData');
-		const data: HomeLayout = JSON.parse(dataAsStr ?? 'null') ?? new HomeLayout();
+		const data: HomeLayout = JSON.parse(dataAsStr ?? '{}') ?? new HomeLayout();
+		if (!data.cols) {
+			data.cols = 4;
+		}
 		storageStore.set(data);
 		return true;
 	}
