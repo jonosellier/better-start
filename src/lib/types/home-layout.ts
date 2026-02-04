@@ -5,12 +5,16 @@ export class TimedGreeting {
 }
 
 export class HomeCard {
-	title: string = 'My card';
+	title: string = 'Get started';
 	icon: string = '🚀';
 	links: HomeLink[] = [
 		{
-			text: 'Google',
-			href: 'https://google.com'
+			text: 'Click me to import',
+			href: '/edit-json/'
+		},
+		{
+			text: 'Click me to change settings',
+			href: '/edit/'
 		}
 	];
 }
@@ -21,7 +25,7 @@ export type HomeLink = {
 };
 
 export class HomeLayout {
-	name: string = 'Person';
+	name: string = 'new user';
 	greetingHours: TimedGreeting[] = [new TimedGreeting()];
 	cards: HomeCard[] = [new HomeCard()];
 	calendarLink?: string;

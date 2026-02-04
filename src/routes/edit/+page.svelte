@@ -1,58 +1,114 @@
 <script lang="ts">
 	import { storageStore } from '$lib/stores/storage';
-	import type { HomeLayout } from '$lib/types/home-layout';
-	import { homeLayoutSchema } from '$lib/types/home-layout.schema';
-	import { ZodError } from 'zod';
+	import { base } from '$app/paths';
+	import { goto } from '$app/navigation';
+	import EditCard from '$lib/edit-card.svelte';
+	import { HomeCard } from '$lib/types/home-layout';
 
-	let dataStr = JSON.stringify($storageStore, undefined, 2);
+	let name = $storageStore?.name ?? '';
+	let cols = $storageStore?.cols ?? 4;
 
-	let errors: ZodError[] = [];
-	function save() {
-		const myErrs: ZodError[] = [];
-		let parsedData: HomeLayout;
-		try {
-			try {
-				parsedData = JSON.parse(dataStr);
-			} catch (e) {
-				throw new ZodError([
-					{
-						code: 'custom',
-						path: [],
-						message: 'JSON parse error'
-					}
-				]);
-			}
-			homeLayoutSchema.parse(parsedData);
-			storageStore.set(parsedData);
-		} catch (e: any) {
-			myErrs.push(e as ZodError);
-		} finally {
-			errors = myErrs;
+	function handleSave() {
+		if ($storageStore) {
+			$storageStore.name = name;
+			$storageStore.cols = cols;
+			storageStore.set($storageStore);
+		}
+		goto(`${base}/`);
+	}
+
+	function handleCancel() {
+		goto(`${base}/`);
+	}
+
+	function addCard() {
+		if ($storageStore) {
+			$storageStore.cards = [...$storageStore.cards, new HomeCard()];
+		}
+	}
+
+	function removeCard(index: number) {
+		if ($storageStore) {
+			$storageStore.cards = $storageStore.cards.filter((_, i) => i !== index);
 		}
 	}
 </script>
 
-<h1 class="text-2xl pb-5 ps-3">Edit</h1>
-<div class="w-screen max-w-2xl rounded-lg overflow-auto border border-zinc-600 mb-6">
-	<textarea class="bg-zinc-900 block font-mono w-full p-3" rows="25" bind:value={dataStr}
-	></textarea>
-</div>
-{#each errors as error}
-	{#each error.issues as issue}
-		<div
-			class="bg-red-700 text-white border border-red-400 px-3 py-1 w-full my-3 rounded rounded-md"
-		>
-			{issue.message} at path
-			<code class="bg-red-950 border border-zinc-600 rounded rounded-sm px-2 py-1"
-				>root/{issue.path.join('/')}</code
-			>.
-		</div>
-	{/each}
-{/each}
-<button class="btn bg-indigo-800 text-indigo-100 hover:bg-indigo-700" on:click={() => save()}>Save Changes</button
->
+<div class="flex me-20 justify-between items-start">
+	<h1 class="text-2xl pb-5 font-bold">Edit Settings</h1>
 
-<!-- <pre>{@debug $storageStore }</pre> -->
-<style>
-	/* CSS */
-</style>
+	<button
+		on:click={handleSave}
+		class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors"
+	>
+		Save
+	</button>
+</div>
+
+<div class="flex gap-6">
+	<!-- Name Input -->
+	<div class="w-xl">
+		<label for="name" class="block text-sm font-medium mb-2">Your Name</label>
+		<input
+			id="name"
+			type="text"
+			bind:value={name}
+			placeholder="Enter your name"
+			class="w-full px-4 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-500"
+		/>
+	</div>
+
+	<!-- Columns Input -->
+	<div>
+		<label for="cols" class="block text-sm font-medium mb-2">Grid Columns</label>
+		<div class="flex items-center gap-4">
+			<input
+				id="cols"
+				type="number"
+				bind:value={cols}
+				min="1"
+				max="12"
+				class="w-20 px-4 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-zinc-500"
+			/>
+			<span class="text-sm text-zinc-400">
+				Cards will be arranged in a {cols}-column grid
+			</span>
+		</div>
+	</div>
+
+	<!-- Actions -->
+</div>
+
+<!-- Cards Section -->
+<div class="mt-8">
+	<div class="flex items-center justify-between mb-4">
+		<h2 class="text-xl font-bold">Edit Cards</h2>
+		<button
+			on:click={addCard}
+			class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors"
+		>
+			+ Add Card
+		</button>
+	</div>
+
+	{#if $storageStore?.cards && $storageStore.cards.length > 0}
+		<div class="grid gap-4" style:grid-template-columns={`repeat(${cols}, minmax(0, 1fr))`}>
+			{#each $storageStore.cards as card, index (index)}
+				<div class="relative">
+					<EditCard {card} />
+					<button
+						on:click={() => removeCard(index)}
+						class="absolute top-2 right-2 w-6 h-6 bg-red-700 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors"
+						title="Delete card"
+					>
+						×
+					</button>
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<div class="p-4 text-center text-zinc-400 border border-zinc-600 rounded-lg">
+			No cards yet. Click "+ Add Card" to create one.
+		</div>
+	{/if}
+</div>

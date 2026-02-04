@@ -38,20 +38,23 @@
 	</div>
 {/if}
 <div class="w-full fixed text-end z-50 text-white top-0 p-5">
+	<a class="btn-icon" href={`${base}/edit-json`}>
+		<Icon symbol="bi-braces" />
+	</a>
 	<a class="btn-icon" href={`${base}/edit`}>
-		<Icon symbol="bi-three-dots-vertical" />
+		<Icon symbol="bi-pencil-fill" />
 	</a>
 </div>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="text-white bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 py-14 duration-500"
+	class="text-white bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 py-14 duration-500 overflow-auto"
 	class:closed={isHome}
 	on:click={() => goto(`${base}/`)}
 >
 	{#if loaded && !isHome}
-		<div class="max-w-3xl duration-300 p-5 max-h-full">
+		<div class="mx-8 mb-10 duration-300 p-5">
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<aside
 				class="p-5 rounded-xl bg-zinc-800 border border-zinc-400/20 relative"
