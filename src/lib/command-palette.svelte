@@ -3,6 +3,8 @@
 	import { storageStore } from '$lib/stores/storage';
 	import Fuse from 'fuse.js';
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
+
 	const commands: { name: string; tag: string; command: () => void }[] = [];
 
 	onMount(() => {
