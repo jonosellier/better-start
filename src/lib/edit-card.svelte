@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HomeCard, HomeLink } from '$lib/types/home-layout';
+	import type { HomeCard } from '$lib/types/home-layout';
 
 	export let card: HomeCard;
 
@@ -125,8 +125,8 @@
 					<div
 						class="flex items-center justify-between p-2 bg-zinc-800 border border-zinc-600 rounded-lg"
 					>
-						<div>
-							<div class="text-sm font-medium text-white">{link.text}</div>
+						<div class="link-txt">
+							<div class="text-sm font-medium text-white truncate">{link.text}</div>
 							<div class="text-xs text-zinc-400 truncate">{link.href}</div>
 						</div>
 						<div class="flex gap-1">
@@ -149,3 +149,9 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.link-txt {
+		max-width: calc(100% - 100px);
+	}
+</style>

@@ -10,6 +10,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { initStorageStore, storageStore } from '$lib/stores/storage';
+	import CommandPalette from '$lib/command-palette.svelte';
 
 	let loaded = false;
 
@@ -70,6 +71,10 @@
 		</div>
 	{/if}
 </div>
+
+{#if $storageStore}
+	<CommandPalette />
+{/if}
 
 <style>
 	.closed {
