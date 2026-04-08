@@ -29,20 +29,7 @@
 </script>
 
 <a class="flex items-center main-container" href={calendarLink}>
-	<div class="w-2 relative h-6">
-		<div
-		class="absolute end-0 whitespace-nowrap details-chip bg-zinc-700 border border-zinc-600 text-white px-3 py-1 rounded-full text-lg w-content duration-150 me-2 text-sm"
-	>
-		<span class="inline-block"
-			>{date.toLocaleDateString('en-US', {
-				dateStyle: 'full'
-			})} at {date.toLocaleTimeString('en-US', {
-				timeStyle: 'short'
-			})}</span
-		>
-	</div>
-	</div>
-	<div class="relative text-zinc-400 cal-holder">
+	<div class="relative text-zinc-400 cal-holder cursor-pointer">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="16"
@@ -76,14 +63,5 @@
 		letter-spacing: 1px;
 		line-height: 12px;
 		border-radius: 4px 4px 0 0;
-	}
-
-	.main-container:not(:hover) .details-chip {
-		transform: translateX(32px);
-		opacity: 0;
-	}
-
-	.details-chip{
-		margin-left: -100%;
 	}
 </style>

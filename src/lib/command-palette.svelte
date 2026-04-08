@@ -4,9 +4,12 @@
 	import Fuse from 'fuse.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
+	import type { DynamicCommand } from './types/home-layout';
 
-	const commands: { name: string; tag: string; command: () => void }[] = [];
+	type Command = { name: string; tag: string; command: () => void };
 
+	const commands: Command[] = [];
+	const dynamicCommands: DynamicCommand[] = $storageStore.commands;
 	onMount(() => {
 		$storageStore.cards.forEach((c) => {
 			c.links.forEach((l) => {
@@ -55,7 +58,32 @@
 
 	let selectedIndex = -1;
 
+	function getCommand(search: string): (Command & { highlightedName: string }) | null {
+		const [command, ...args] = search.split(/\s+/);
+		const dynCmd = dynamicCommands.find(
+			(v) =>
+				v.name.toLocaleLowerCase() === command.toLocaleLowerCase() &&
+				v.replacer.match(/\$\d/g)?.length === args.filter(Boolean).length
+		);
+		console.log({ command, search, dynCmd });
+		if (dynCmd) {
+			const { name, tag } = dynCmd;
+			let dynamicUrl = dynCmd.replacer;
+			args.forEach((arg, i) => {
+				dynamicUrl = dynamicUrl.replace(`$${i + 1}`, arg);
+			});
+			return {
+				name,
+				tag,
+				command: () => (window.location.href = new URL(dynamicUrl).toString()),
+				highlightedName: `${tag}: <span class="match">${args.join(' ')}</span>`
+			};
+		}
+		return null;
+	}
+
 	function search(e: Event) {
+		const directCmdMatch = getCommand((e.target as HTMLInputElement).value);
 		const searchResults = fuse.search((e.target as HTMLInputElement).value);
 		results = searchResults.map((v) => {
 			const { item, matches } = v;
@@ -79,6 +107,9 @@
 
 			return { ...item, highlightedName };
 		});
+		if (directCmdMatch) {
+			results = [directCmdMatch, ...results];
+		}
 		selectedIndex = results.length > 0 ? 0 : -1;
 	}
 

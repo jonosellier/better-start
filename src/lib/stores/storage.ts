@@ -10,6 +10,10 @@ export function initStorageStore() {
 		if (!data.cols) {
 			data.cols = 4;
 		}
+
+		if (!data.commands) {
+			data.commands = [];
+		}
 		storageStore.set(data);
 		return true;
 	}

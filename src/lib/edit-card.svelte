@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HomeCard } from '$lib/types/home-layout';
+	import Icon from './icon.svelte';
 
 	export let card: HomeCard;
 
@@ -45,7 +46,7 @@
 <div class="space-y-4 p-4 bg-zinc-700/50 rounded-lg border border-zinc-600">
 	<!-- Title Input -->
 	<div>
-		<label class="block text-sm font-medium mb-1">Card Title</label>
+		<span class="block text-sm font-medium mb-1">Card Title</span>
 		<input
 			type="text"
 			bind:value={card.title}
@@ -56,7 +57,7 @@
 
 	<!-- Icon Input -->
 	<div>
-		<label class="block text-sm font-medium mb-1">Icon (emoji or image URL)</label>
+		<span class="block text-sm font-medium mb-1">Icon (emoji or image URL)</span>
 		<div class="flex gap-2">
 			<input
 				type="text"
@@ -79,13 +80,7 @@
 	<!-- Links Section -->
 	<div>
 		<div class="flex items-center justify-between mb-2">
-			<label class="text-sm font-medium">Links</label>
-			<button
-				on:click={addLink}
-				class="text-xs px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition-colors"
-			>
-				+ Add Link
-			</button>
+			<span class="text-sm font-medium">Links</span>
 		</div>
 
 		<div class="space-y-2">
@@ -132,26 +127,33 @@
 						<div class="flex gap-1">
 							<button
 								on:click={() => startEditLink(index)}
-								class="px-2 py-1 text-xs bg-zinc-600 hover:bg-zinc-500 text-white rounded transition-colors"
+								class="w-6 h-6 bg-transparent hover:bg-zinc-600 text-zinc-500 hover:text-zinc-100 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
 							>
-								Edit
+								<Icon symbol="bi-pencil-fill" size="sm" />
 							</button>
 							<button
 								on:click={() => removeLink(index)}
-								class="px-2 py-1 text-xs bg-red-700 hover:bg-red-600 text-white rounded transition-colors"
+								class="w-6 h-6 bg-transparent hover:bg-red-600 text-zinc-500 hover:text-red-100 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
 							>
-								Delete
+								<Icon symbol="bi-trash-fill" size="sm" />
 							</button>
 						</div>
 					</div>
 				{/if}
 			{/each}
+
+			<button
+				on:click={addLink}
+				class="text-xs w-full px-2 py-1 bg-zinc-700 hover:bg-emerald-700 text-white rounded transition-colors"
+			>
+				+ Add Link
+			</button>
 		</div>
 	</div>
 </div>
 
 <style>
 	.link-txt {
-		max-width: calc(100% - 100px);
+		max-width: calc(100% - 60px);
 	}
 </style>

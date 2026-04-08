@@ -4,6 +4,7 @@ export class TimedGreeting {
 	emoji?: string = '👋';
 }
 
+export type DynamicCommand = { name: string; tag: string; replacer: string };
 export class HomeCard {
 	title: string = 'Get started';
 	icon: string = '🚀';
@@ -30,4 +31,6 @@ export class HomeLayout {
 	cards: HomeCard[] = [new HomeCard()];
 	calendarLink?: string;
 	cols: number = 4;
+	ticker: string = '';
+	commands: DynamicCommand[] = [];
 }

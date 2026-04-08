@@ -2,8 +2,6 @@
 	import Icon from '$lib/icon.svelte';
 	import '../app.css';
 	import { page } from '$app/stores';
-
-	import { data } from '$lib/data';
 	import HomeCard from '$lib/home-card.svelte';
 	import Greeter from '$lib/greeter.svelte';
 	import { base } from '$app/paths';
