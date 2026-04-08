@@ -29,13 +29,13 @@
 		window.addEventListener('keydown', (e) => {
 			if (e.key === '/' && $page.url.pathname === base + '/') {
 				show = true;
-				inputEl.focus();
+				inputEl?.focus();
 				e.preventDefault();
 				e.stopPropagation();
 			}
 			if (e.key === 'Escape') {
 				show = false;
-				inputEl.blur();
+				inputEl?.blur();
 				inputEl.value = '';
 			}
 		});
@@ -61,23 +61,51 @@
 	function getCommand(search: string): (Command & { highlightedName: string }) | null {
 		const [command, ...args] = search.split(/\s+/);
 		const dynCmd = dynamicCommands.find(
-			(v) =>
-				v.name.toLocaleLowerCase() === command.toLocaleLowerCase() &&
-				v.replacer.match(/\$\d/g)?.length === args.filter(Boolean).length
+			(v) => v.name.toLocaleLowerCase() === command.toLocaleLowerCase()
 		);
-		console.log({ command, search, dynCmd });
 		if (dynCmd) {
 			const { name, tag } = dynCmd;
 			let dynamicUrl = dynCmd.replacer;
 			args.forEach((arg, i) => {
 				dynamicUrl = dynamicUrl.replace(`$${i + 1}`, arg);
 			});
-			return {
-				name,
-				tag,
-				command: () => (window.location.href = new URL(dynamicUrl).toString()),
-				highlightedName: `${tag}: <span class="match">${args.join(' ')}</span>`
-			};
+			const reqArgs = dynCmd.replacer.match(/\$\d/g)?.length ?? 0;
+			const givenArgs = args.filter(Boolean).length;
+			const diff = reqArgs - givenArgs;
+			if (givenArgs === 0) {
+				const argList = new Array(reqArgs)
+					.fill(1)
+					.map((_, i) => 'arg' + (i + 1))
+					.join(' ');
+				return {
+					name,
+					tag,
+					command: () => void 0,
+					highlightedName: `${tag}: <em>${argList}</em>`
+				};
+			}
+			if (diff === 0) {
+				return {
+					name,
+					tag,
+					command: () => (window.location.href = new URL(dynamicUrl).toString()),
+					highlightedName: `${tag}: <span class="match">${args.join(' ')}</span>`
+				};
+			} else if (diff > 0) {
+				return {
+					name,
+					tag,
+					command: () => void 0,
+					highlightedName: `${tag}: <span class="match">${args.join(' ')}</span> (<em>needs ${diff} more arg${diff === 1 ? '' : 's'}</em>)`
+				};
+			} else if (diff < 0) {
+				return {
+					name,
+					tag,
+					command: () => void 0,
+					highlightedName: `${tag}: <span class="match">${args.join(' ')}</span> (<em>Too many args</em>)`
+				};
+			}
 		}
 		return null;
 	}
@@ -172,6 +200,16 @@
 					>
 						{@html res.highlightedName}
 					</button>
+				{/each}
+			</div>
+		{:else}
+			<div class="px-1 text-zinc-300 text-xs">
+				Available Commands:
+				{#each dynamicCommands as c}
+					<span
+						class="px-1 border border-zinc-600 bg-zinc-800 text-zinc-400 rounded me-1 font-mono"
+						title={c.replacer}>{c.name}</span
+					>
 				{/each}
 			</div>
 		{/if}
