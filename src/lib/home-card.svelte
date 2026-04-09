@@ -8,7 +8,7 @@
 </script>
 
 <div
-	class="py-6 rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white border border-zinc-300 dark:border-zinc-400/20 min-w-64"
+	class="shadow hover:shadow-lg py-6 rounded-xl bg-white text-zinc-900 dark:bg-zinc-800 dark:text-white border border-zinc-300 dark:border-zinc-400/20 min-w-64"
 >
 	<div class="px-6 flex items-center justify-between mb-5">
 		<h1 class="text-xl font-bold">{card.title}</h1>

@@ -6,7 +6,7 @@
 
 {#if ticker}
 	<div
-		class="max-w-sm bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white border border-zinc-300 dark:border-zinc-400/20 rounded-full p-1"
+		class="transition shadow max-w-sm bg-white hover:shadow-lg text-zinc-900 dark:bg-zinc-800 dark:text-white border border-zinc-300 dark:border-zinc-400/20 rounded-full p-1"
 	>
 		<tv-ticker-tag symbol={ticker} hide-background size="medium" theme={$themeStore}
 		></tv-ticker-tag>

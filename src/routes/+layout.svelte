@@ -8,7 +8,6 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { initStorageStore, storageStore } from '$lib/stores/storage';
-	import { themeStore } from '$lib/stores/theme';
 	import CommandPalette from '$lib/command-palette.svelte';
 
 	let loaded = false;
@@ -22,7 +21,7 @@
 </script>
 
 {#if $storageStore}
-	<div class="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white">
+	<div class="bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white">
 		<div
 			class="flex flex-col items-center justify-center h-dvh mx-auto px-4"
 			style:max-width={`${$storageStore.cols * 17 + 4.5}rem`}

@@ -171,17 +171,17 @@
 </script>
 
 <div
-	class="command-palette w-full h-dvh bg-black/40 backdrop-blur-lg fixed flex items-start justify-center top-0 left-0"
+	class="command-palette w-full h-dvh bg-black/20 backdrop-blur-lg fixed flex items-start justify-center top-0 left-0"
 	class:show
 >
 	<div
-		class="search-container my-24 w-4/12 bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white border border-zinc-300 dark:border-zinc-600 rounded-lg focus:border-zinc-400 dark:focus:border-zinc-500"
+		class="shadow-xl search-container my-24 w-4/12 bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white border border-zinc-400 dark:border-zinc-600 rounded-lg focus:border-zinc-400 dark:focus:border-zinc-500"
 	>
 		<input
 			type="text"
 			on:input={search}
 			on:keydown={handleKeydown}
-			class="bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white text-4xl placeholder-zinc-500 dark:placeholder-zinc-400 p-4 w-full focus:outline-none"
+			class="bg-zinc-200 rounded-lg text-zinc-900 dark:bg-zinc-700 dark:text-white text-4xl placeholder-zinc-500 dark:placeholder-zinc-400 p-4 w-full focus:outline-none"
 			bind:this={inputEl}
 		/>
 		{#if results.length > 0}
@@ -201,7 +201,7 @@
 				{/each}
 			</div>
 		{:else}
-			<div class="px-1 text-zinc-600 dark:text-zinc-300 text-xs">
+			<div class="px-1 text-zinc-600 dark:text-zinc-300 text-xs pb-1">
 				Available Commands:
 				{#each dynamicCommands as c}
 					<span
@@ -239,7 +239,11 @@
 	}
 
 	:global(.results button:not(.selected-result, :hover) .match) {
-		@apply text-zinc-800 dark:text-zinc-300 font-semibold;
+		@apply text-zinc-800 font-semibold;
+	}
+
+	:global(.dark .results button:not(.selected-result, :hover) .match) {
+		@apply text-zinc-300 font-semibold;
 	}
 
 	input {
