@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { initStorageStore, storageStore } from '$lib/stores/storage';
+	import { themeStore } from '$lib/stores/theme';
 	import CommandPalette from '$lib/command-palette.svelte';
 
 	let loaded = false;
@@ -21,13 +22,13 @@
 </script>
 
 {#if $storageStore}
-	<div class="text-white bg-zinc-900">
+	<div class="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-white">
 		<div
 			class="flex flex-col items-center justify-center h-dvh mx-auto px-4"
 			style:max-width={`${$storageStore.cols * 17 + 4.5}rem`}
 		>
 			<Greeter data={$storageStore} />
-			<hr class="my-8 border border-zinc-700 w-full" />
+			<hr class="my-8 border border-zinc-300 dark:border-zinc-700 w-full" />
 			<main class="flex flex-wrap gap-4 p-7 w-full">
 				{#each $storageStore.cards as card}
 					<HomeCard {card} />
@@ -36,7 +37,9 @@
 		</div>
 	</div>
 {/if}
-<div class="w-full fixed text-end z-50 text-white top-0 p-5">
+<div
+	class="w-full fixed text-end z-50 top-0 p-5 text-zinc-900 dark:text-white flex justify-end gap-2"
+>
 	<a class="btn-icon" href={`${base}/edit-json`}>
 		<Icon symbol="bi-braces" />
 	</a>
@@ -48,7 +51,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="text-white bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 py-14 duration-500 overflow-auto"
+	class="bg-black/40 dark:bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 py-14 duration-500 overflow-auto"
 	class:closed={isHome}
 	on:click={() => goto(`${base}/`)}
 >
@@ -56,7 +59,7 @@
 		<div class="mx-8 mb-10 duration-300 p-5">
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<aside
-				class="p-5 rounded-xl bg-zinc-800 border border-zinc-400/20 relative"
+				class="p-5 rounded-xl bg-zinc-50 text-zinc-900 dark:bg-zinc-800 dark:text-white border border-zinc-300 dark:border-zinc-400/20 relative"
 				on:click={(e) => {
 					e.stopImmediatePropagation();
 				}}

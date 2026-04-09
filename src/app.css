@@ -2,10 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	--color-200: #bfdbfe;
+	--color-400: #60a5fa;
+	--color-500: #3b82f6;
+	--color-600: #2563eb;
+	--color-700: #1d4ed8;
+	--color-800: #1e40af;
+}
+
 .btn {
-	@apply text-start hover:bg-zinc-700 text-white py-2 px-4 rounded-lg border border-transparent hover:border-zinc-500 inline-block text-center duration-150;
+	@apply text-start hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white py-2 px-4 rounded-lg border border-transparent hover:border-zinc-400 dark:hover:border-zinc-500 inline-block text-center duration-150;
 }
 
 .btn-icon {
-	@apply hover:bg-zinc-500/30 rounded-full w-9 h-9 inline-block text-center align-middle p-1 duration-150;
+	@apply hover:bg-zinc-200 dark:hover:bg-zinc-500/30 rounded-full w-9 h-9 inline-block text-center align-middle p-1 duration-150 text-zinc-900 dark:text-white;
 }

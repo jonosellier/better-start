@@ -43,7 +43,9 @@
 	}
 </script>
 
-<div class="space-y-4 p-4 bg-zinc-700/50 rounded-lg border border-zinc-600">
+<div
+	class="space-y-4 p-4 bg-zinc-200 text-zinc-900 dark:bg-zinc-700/50 dark:text-white rounded-lg border border-zinc-300 dark:border-zinc-600"
+>
 	<!-- Title Input -->
 	<div>
 		<span class="block text-sm font-medium mb-1">Card Title</span>
@@ -51,7 +53,7 @@
 			type="text"
 			bind:value={card.title}
 			placeholder="Enter card title"
-			class="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-500"
+			class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg text-zinc-900 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500"
 		/>
 	</div>
 
@@ -63,10 +65,10 @@
 				type="text"
 				bind:value={card.icon}
 				placeholder="🚀 or https://example.com/icon.png"
-				class="flex-1 px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-500"
+				class="flex-1 px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg text-zinc-900 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500"
 			/>
 			<div
-				class="flex items-center justify-center w-12 h-10 bg-zinc-800 border border-zinc-600 rounded-lg"
+				class="flex items-center justify-center w-12 h-10 bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 rounded-lg"
 			>
 				{#if card.icon.match(EMOJI_REGEX)}
 					<span class="text-2xl">{card.icon}</span>
@@ -87,29 +89,34 @@
 			{#each card.links as link, index (index)}
 				{#if editingLinkIndex === index}
 					<!-- Edit Mode -->
-					<div class="p-3 bg-zinc-800 border border-zinc-500 rounded-lg space-y-2">
+					<div
+						class="p-3 bg-zinc-300 dark:bg-zinc-800 border border-zinc-400 dark:border-zinc-500 rounded-lg space-y-2"
+					>
 						<input
 							type="text"
 							bind:value={editingLinkText}
 							placeholder="Link text"
-							class="w-full px-2 py-1 bg-zinc-700 border border-zinc-600 rounded text-white text-sm focus:outline-none focus:border-zinc-500"
+							class="w-full px-2 py-1 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded text-zinc-900 dark:text-white text-sm focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500"
 						/>
 						<input
 							type="url"
 							bind:value={editingLinkHref}
 							placeholder="https://example.com"
-							class="w-full px-2 py-1 bg-zinc-700 border border-zinc-600 rounded text-white text-sm focus:outline-none focus:border-zinc-500"
+							class="w-full px-2 py-1 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded text-zinc-900 dark:text-white text-sm focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500"
 						/>
 						<div class="flex gap-2 justify-end">
 							<button
 								on:click={cancelEditLink}
-								class="px-2 py-1 text-xs bg-zinc-600 hover:bg-zinc-500 text-white rounded transition-colors"
+								class="px-2 py-1 text-xs bg-zinc-400 dark:bg-zinc-600 hover:bg-zinc-500 dark:hover:bg-zinc-500 text-white rounded transition-colors"
 							>
 								Cancel
 							</button>
 							<button
 								on:click={saveLink}
-								class="px-2 py-1 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded transition-colors"
+								class="px-2 py-1 text-xs text-white rounded transition-colors"
+								style="background-color: var(--color-600);"
+								on:mouseenter={(e) => (e.target.style.backgroundColor = 'var(--color-700)')}
+								on:mouseleave={(e) => (e.target.style.backgroundColor = 'var(--color-600)')}
 							>
 								Save
 							</button>
@@ -118,22 +125,24 @@
 				{:else}
 					<!-- Display Mode -->
 					<div
-						class="flex items-center justify-between p-2 bg-zinc-800 border border-zinc-600 rounded-lg"
+						class="flex items-center justify-between p-2 bg-zinc-300 dark:bg-zinc-800 border border-zinc-400 dark:border-zinc-600 rounded-lg"
 					>
 						<div class="link-txt">
-							<div class="text-sm font-medium text-white truncate">{link.text}</div>
-							<div class="text-xs text-zinc-400 truncate">{link.href}</div>
+							<div class="text-sm font-medium text-zinc-900 dark:text-white truncate">
+								{link.text}
+							</div>
+							<div class="text-xs text-zinc-600 dark:text-zinc-400 truncate">{link.href}</div>
 						</div>
 						<div class="flex gap-1">
 							<button
 								on:click={() => startEditLink(index)}
-								class="w-6 h-6 bg-transparent hover:bg-zinc-600 text-zinc-500 hover:text-zinc-100 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
+								class="w-6 h-6 bg-transparent hover:bg-zinc-400 dark:hover:bg-zinc-600 text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
 							>
 								<Icon symbol="bi-pencil-fill" size="sm" />
 							</button>
 							<button
 								on:click={() => removeLink(index)}
-								class="w-6 h-6 bg-transparent hover:bg-red-600 text-zinc-500 hover:text-red-100 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
+								class="w-6 h-6 bg-transparent hover:bg-red-500 dark:hover:bg-red-600 text-zinc-600 dark:text-zinc-500 dark:hover:text-white hover:text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors"
 							>
 								<Icon symbol="bi-trash-fill" size="sm" />
 							</button>
@@ -144,7 +153,23 @@
 
 			<button
 				on:click={addLink}
-				class="text-xs w-full px-2 py-1 bg-zinc-700 hover:bg-emerald-700 text-white rounded transition-colors"
+				class="text-xs w-full px-2 py-1 bg-zinc-300 dark:bg-zinc-700 text-zinc-900 dark:text-white rounded transition-colors hover:bg-zinc-400 dark:hover:text-white"
+				on:mouseenter={(e) => {
+					if (e.target.closest('.dark')) {
+						e.target.style.backgroundColor = 'var(--color-700)';
+						e.target.style.color = 'white';
+					} else {
+						e.target.style.backgroundColor = 'rgb(161 161 170)';
+					}
+				}}
+				on:mouseleave={(e) => {
+					if (e.target.closest('.dark')) {
+						e.target.style.backgroundColor = 'rgb(63 63 70)';
+						e.target.style.color = 'white';
+					} else {
+						e.target.style.backgroundColor = 'rgb(212 212 216)';
+					}
+				}}
 			>
 				+ Add Link
 			</button>

@@ -175,39 +175,37 @@
 	class:show
 >
 	<div
-		class="search-container my-24 w-4/12 bg-zinc-700 border border-zinc-600 rounded-lg focus:border-zinc-500"
+		class="search-container my-24 w-4/12 bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white border border-zinc-300 dark:border-zinc-600 rounded-lg focus:border-zinc-400 dark:focus:border-zinc-500"
 	>
 		<input
 			type="text"
 			on:input={search}
 			on:keydown={handleKeydown}
-			class=" bg-zinc-700 text-white text-4xl placeholder-zinc-400 p-4 w-full focus:outline-none"
+			class="bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white text-4xl placeholder-zinc-500 dark:placeholder-zinc-400 p-4 w-full focus:outline-none"
 			bind:this={inputEl}
 		/>
 		{#if results.length > 0}
 			<div
-				class="results flex flex-col text-white p-1 border-zinc-600 border-t max-h-96 overflow-y-auto overflow-x-hidden"
+				class="results flex flex-col p-1 border-zinc-300 dark:border-zinc-600 border-t max-h-96 overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-white"
 				id="search-res"
 			>
 				{#each results as res, index}
 					<button
 						on:click={() => res.command()}
-						class="flex-shrink-0 text-lg block text-left py-1 px-2 cursor-pointer transition-all duration-150 whitespace-nowrap overflow-hidden text-ellipsis border rounded {selectedIndex ===
-						index
-							? 'bg-blue-800 text-blue-200 border-blue-700'
-							: 'bg-zinc-700 border-zinc-700'} hover:bg-blue-800 hover:border-blue-700 hover:text-blue-200"
+						class="flex-shrink-0 text-lg block text-left py-1 px-2 cursor-pointer transition-all duration-150 whitespace-nowrap overflow-hidden text-ellipsis border rounded command-result"
 						class:selected-result={selectedIndex === index}
+						on:mouseenter={() => (selectedIndex = index)}
 					>
 						{@html res.highlightedName}
 					</button>
 				{/each}
 			</div>
 		{:else}
-			<div class="px-1 text-zinc-300 text-xs">
+			<div class="px-1 text-zinc-600 dark:text-zinc-300 text-xs">
 				Available Commands:
 				{#each dynamicCommands as c}
 					<span
-						class="px-1 border border-zinc-600 bg-zinc-800 text-zinc-400 rounded me-1 font-mono"
+						class="px-1 border border-zinc-400 dark:border-zinc-600 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 rounded me-1 font-mono"
 						title={c.replacer}>{c.name}</span
 					>
 				{/each}
@@ -218,16 +216,30 @@
 
 <style>
 	.results button:not(.selected-result, :hover) {
-		@apply text-zinc-400;
+		@apply text-zinc-700 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-700 border-zinc-100 dark:border-zinc-700;
+	}
+
+	.results button.selected-result,
+	.results button:hover {
+		color: white;
+		background-color: var(--color-600);
+		border-color: var(--color-500);
+	}
+
+	:global(.dark) .results button.selected-result,
+	:global(.dark) .results button:hover {
+		background-color: var(--color-800);
+		border-color: var(--color-700);
+		color: var(--color-200);
 	}
 
 	:global(.results button.selected-result .match),
 	:global(.results button:hover .match) {
-		@apply text-white font-semibold;
+		@apply text-white dark:text-white font-semibold;
 	}
 
 	:global(.results button:not(.selected-result, :hover) .match) {
-		@apply text-zinc-300 font-semibold;
+		@apply text-zinc-800 dark:text-zinc-300 font-semibold;
 	}
 
 	input {

@@ -33,24 +33,32 @@
 </script>
 
 <h1 class="text-2xl pb-5 ps-3">Edit</h1>
-<div class="w-screen max-w-2xl rounded-lg overflow-auto border border-zinc-600 mb-6">
-	<textarea class="bg-zinc-900 block font-mono w-full p-3" rows="25" bind:value={dataStr}
+<div
+	class="w-screen max-w-2xl rounded-lg overflow-auto border border-zinc-300 dark:border-zinc-600 mb-6"
+>
+	<textarea
+		class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white block font-mono w-full p-3"
+		rows="25"
+		bind:value={dataStr}
 	></textarea>
 </div>
 {#each errors as error}
 	{#each error.issues as issue}
 		<div
-			class="bg-red-700 text-white border border-red-400 px-3 py-1 w-full my-3 rounded rounded-md"
+			class="bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-200 border border-red-300 dark:border-red-700 px-3 py-1 w-full my-3 rounded rounded-md"
 		>
 			{issue.message} at path
-			<code class="bg-red-950 border border-zinc-600 rounded rounded-sm px-2 py-1"
+			<code
+				class="bg-red-200 dark:bg-red-900 border border-red-300 dark:border-zinc-600 rounded rounded-sm px-2 py-1 text-red-900 dark:text-red-200"
 				>root/{issue.path.join('/')}</code
 			>.
 		</div>
 	{/each}
 {/each}
-<button class="btn bg-blue-800 text-blue-100 hover:bg-blue-700" on:click={() => save()}
-	>Save Changes</button
+<button
+	class="btn text-white py-2 px-4 rounded-lg border duration-150 inline-block text-center"
+	style="background-color: var(--color-600); border-color: var(--color-500);"
+	on:click={() => save()}>Save Changes</button
 >
 
 <!-- <pre>{@debug $storageStore }</pre> -->

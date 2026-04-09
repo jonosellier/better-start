@@ -7,7 +7,9 @@
 		/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
 </script>
 
-<div class="py-6 rounded-xl bg-zinc-800 border border-zinc-400/20 min-w-64">
+<div
+	class="py-6 rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white border border-zinc-300 dark:border-zinc-400/20 min-w-64"
+>
 	<div class="px-6 flex items-center justify-between mb-5">
 		<h1 class="text-xl font-bold">{card.title}</h1>
 		{#if card.icon.match(EMOJI_REGEX)}
@@ -19,7 +21,7 @@
 	<div class="px-3">
 		{#each card.links as link, i}
 			{#if i > 0}
-				<hr class="border-zinc-600 mx-2" />
+				<hr class="border-zinc-300 dark:border-zinc-600 mx-2" />
 			{/if}
 			<a href={link.href} class="btn w-full">{link.text}</a>
 		{/each}

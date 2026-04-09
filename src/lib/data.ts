@@ -105,5 +105,8 @@ export const data: HomeLayout = {
 				}
 			]
 		}
-	]
+	],
+	cols: 4,
+	ticker: '',
+	commands: []
 };
