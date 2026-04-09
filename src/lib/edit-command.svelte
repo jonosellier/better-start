@@ -18,7 +18,7 @@
 				class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg text-zinc-900 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500"
 			/>
 			<div class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-				This is the command you enter in the command palette
+				This is the command you enter to activate
 			</div>
 		</div>
 
@@ -32,12 +32,12 @@
 				class="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg text-zinc-900 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500"
 			/>
 			<div class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
-				This is the placeholder text that will be replaced in content.
+				This is the name shown below the command palette
 			</div>
 		</div>
 
 		<!-- Replacer Input -->
-		<div>
+		<div class="grow">
 			<span class="block text-sm font-medium mb-1">Replacer (value or URL)</span>
 			<input
 				type="text"

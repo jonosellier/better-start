@@ -139,18 +139,6 @@
 			</button>
 			<button
 				on:click={() => {
-					colorPaletteStore.set('pink');
-				}}
-				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-pink-600 dark:bg-pink-400"
-				class:ring-2={$colorPaletteStore === 'pink'}
-				class:ring-offset-2={$colorPaletteStore === 'pink'}
-				class:ring-pink-800={$colorPaletteStore === 'pink'}
-				class:dark:ring-pink-200={$colorPaletteStore === 'pink'}
-				title="Pink"
-			>
-			</button>
-			<button
-				on:click={() => {
 					colorPaletteStore.set('violet');
 				}}
 				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-violet-600 dark:bg-violet-400"
@@ -163,14 +151,14 @@
 			</button>
 			<button
 				on:click={() => {
-					colorPaletteStore.set('lime');
+					colorPaletteStore.set('pink');
 				}}
-				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-lime-600 dark:bg-lime-400"
-				class:ring-2={$colorPaletteStore === 'lime'}
-				class:ring-offset-2={$colorPaletteStore === 'lime'}
-				class:ring-lime-800={$colorPaletteStore === 'lime'}
-				class:dark:ring-lime-200={$colorPaletteStore === 'lime'}
-				title="Lime"
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-pink-600 dark:bg-pink-400"
+				class:ring-2={$colorPaletteStore === 'pink'}
+				class:ring-offset-2={$colorPaletteStore === 'pink'}
+				class:ring-pink-800={$colorPaletteStore === 'pink'}
+				class:dark:ring-pink-200={$colorPaletteStore === 'pink'}
+				title="Pink"
 			>
 			</button>
 			<button
@@ -183,6 +171,18 @@
 				class:ring-orange-800={$colorPaletteStore === 'orange'}
 				class:dark:ring-orange-200={$colorPaletteStore === 'orange'}
 				title="Orange"
+			>
+			</button>
+			<button
+				on:click={() => {
+					colorPaletteStore.set('lime');
+				}}
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-lime-600 dark:bg-lime-400"
+				class:ring-2={$colorPaletteStore === 'lime'}
+				class:ring-offset-2={$colorPaletteStore === 'lime'}
+				class:ring-lime-800={$colorPaletteStore === 'lime'}
+				class:dark:ring-lime-200={$colorPaletteStore === 'lime'}
+				title="Lime"
 			>
 			</button>
 		</div>

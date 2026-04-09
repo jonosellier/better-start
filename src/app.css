@@ -16,7 +16,7 @@
 }
 
 .btn {
-	@apply py-2 px-4 rounded-lg border border-transparent hover:border-zinc-400 dark:hover:border-zinc-500 inline-block text-center duration-150;
+	@apply text-start py-2 px-4 rounded-lg border border-transparent hover:border-zinc-400 dark:hover:border-zinc-500 inline-block hover:bg-zinc-200 dark:hover:bg-zinc-700 duration-150;
 }
 
 .btn-icon {
