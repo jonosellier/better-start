@@ -49,7 +49,8 @@
 		</div>
 	{/each}
 {/each}
-<button class="btn bg-indigo-800 text-indigo-100 hover:bg-indigo-700" on:click={() => save()}>Save Changes</button
+<button class="btn bg-blue-800 text-blue-100 hover:bg-blue-700" on:click={() => save()}
+	>Save Changes</button
 >
 
 <!-- <pre>{@debug $storageStore }</pre> -->

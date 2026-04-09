@@ -218,7 +218,7 @@
 
 <style>
 	.results button:not(.selected-result, :hover) {
-		@apply text-slate-400;
+		@apply text-zinc-400;
 	}
 
 	:global(.results button.selected-result .match),
@@ -227,7 +227,7 @@
 	}
 
 	:global(.results button:not(.selected-result, :hover) .match) {
-		@apply text-slate-300 font-semibold;
+		@apply text-zinc-300 font-semibold;
 	}
 
 	input {
