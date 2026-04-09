@@ -113,10 +113,7 @@
 							</button>
 							<button
 								on:click={saveLink}
-								class="px-2 py-1 text-xs text-white rounded transition-colors"
-								style="background-color: var(--color-600);"
-								on:mouseenter={(e) => (e.target.style.backgroundColor = 'var(--color-700)')}
-								on:mouseleave={(e) => (e.target.style.backgroundColor = 'var(--color-600)')}
+								class="px-2 py-1 text-xs text-white rounded transition-colors btn-primary"
 							>
 								Save
 							</button>
@@ -153,23 +150,7 @@
 
 			<button
 				on:click={addLink}
-				class="text-xs w-full px-2 py-1 bg-zinc-300 dark:bg-zinc-700 text-zinc-900 dark:text-white rounded transition-colors hover:bg-zinc-400 dark:hover:text-white"
-				on:mouseenter={(e) => {
-					if (e.target.closest('.dark')) {
-						e.target.style.backgroundColor = 'var(--color-700)';
-						e.target.style.color = 'white';
-					} else {
-						e.target.style.backgroundColor = 'rgb(161 161 170)';
-					}
-				}}
-				on:mouseleave={(e) => {
-					if (e.target.closest('.dark')) {
-						e.target.style.backgroundColor = 'rgb(63 63 70)';
-						e.target.style.color = 'white';
-					} else {
-						e.target.style.backgroundColor = 'rgb(212 212 216)';
-					}
-				}}
+				class="text-xs w-full px-2 py-1 bg-zinc-300 dark:bg-zinc-700 btn-muted text-zinc-900 dark:text-white rounded transition-colors hover:text-white btn-muted"
 			>
 				+ Add Link
 			</button>

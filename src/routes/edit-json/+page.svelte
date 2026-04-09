@@ -24,7 +24,7 @@
 			}
 			homeLayoutSchema.parse(parsedData);
 			storageStore.set(parsedData);
-		} catch (e: any) {
+		} catch (e: unknown) {
 			myErrs.push(e as ZodError);
 		} finally {
 			errors = myErrs;
@@ -56,8 +56,7 @@
 	{/each}
 {/each}
 <button
-	class="btn text-white py-2 px-4 rounded-lg border duration-150 inline-block text-center"
-	style="background-color: var(--color-600); border-color: var(--color-500);"
+	class="btn btn-primary text-white py-2 px-4 rounded-lg border duration-150 inline-block text-center"
 	on:click={() => save()}>Save Changes</button
 >
 

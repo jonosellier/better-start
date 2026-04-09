@@ -6,7 +6,7 @@
 	import EditCommand from '$lib/edit-command.svelte';
 	import { HomeCard, type DynamicCommand } from '$lib/types/home-layout';
 	import Icon from '$lib/icon.svelte';
-	import { themeStore } from '$lib/stores/theme';
+	import { colorPaletteStore, themeStore } from '$lib/stores/theme';
 	import ColorPalettePicker from '$lib/color-palette-picker.svelte';
 
 	let name = $storageStore?.name ?? '';
@@ -57,24 +57,20 @@
 <div class="flex me-20 justify-between items-start">
 	<h1 class="text-2xl pb-5 font-bold">Edit Settings</h1>
 
-	<div class="flex gap-2 items-center">
-		<ColorPalettePicker />
-		<button on:click={() => themeStore.toggle()} class="btn-icon" title="Toggle theme">
-			<Icon symbol={$themeStore === 'dark' ? 'bi-sun-fill' : 'bi-moon-fill'} />
-		</button>
+	<div class="flex gap-8 items-center">
+		<a class="btn-icon" href={`${base}/edit-json`}>
+			<Icon symbol="bi-braces" />
+		</a>
 		<button
 			on:click={handleSave}
-			class="px-6 py-2 text-white rounded-lg font-medium transition-colors"
-			style="background-color: var(--color-600);"
-			on:mouseenter={(e) => (e.target.style.backgroundColor = 'var(--color-700)')}
-			on:mouseleave={(e) => (e.target.style.backgroundColor = 'var(--color-600)')}
+			class="px-6 py-2 text-white rounded-lg font-medium transition-colors btn-primary"
 		>
 			Save
 		</button>
 	</div>
 </div>
 
-<div class="flex gap-6">
+<div class="flex gap-6 mt-8">
 	<!-- Name Input -->
 	<div class="w-xl">
 		<label for="name" class="block text-sm font-medium mb-2">Your Name</label>
@@ -100,6 +96,7 @@
 		/>
 	</div>
 
+	<!-- Ticker Input -->
 	<div class="w-72">
 		<label for="ticker" class="block text-sm font-medium mb-2"
 			>Ticker in MARKET:SYMBOL format <em class="text-zinc-600 dark:text-zinc-400 font-normal"
@@ -122,6 +119,96 @@
 		>
 	</div>
 
+	<div class="grow"></div>
+	<div>
+		<span class="block text-sm font-medium mb-2">Color</span>
+		<div
+			class="flex gap-4 py-2 px-4 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg text-zinc-900 dark:text-white placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500 invalid:border-red-500"
+		>
+			<button
+				on:click={() => {
+					colorPaletteStore.set('blue');
+				}}
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-blue-600 dark:bg-blue-400"
+				class:ring-2={$colorPaletteStore === 'blue'}
+				class:ring-offset-2={$colorPaletteStore === 'blue'}
+				class:ring-blue-800={$colorPaletteStore === 'blue'}
+				class:dark:ring-blue-200={$colorPaletteStore === 'blue'}
+				title="Blue"
+			>
+			</button>
+			<button
+				on:click={() => {
+					colorPaletteStore.set('pink');
+				}}
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-pink-600 dark:bg-pink-400"
+				class:ring-2={$colorPaletteStore === 'pink'}
+				class:ring-offset-2={$colorPaletteStore === 'pink'}
+				class:ring-pink-800={$colorPaletteStore === 'pink'}
+				class:dark:ring-pink-200={$colorPaletteStore === 'pink'}
+				title="Pink"
+			>
+			</button>
+			<button
+				on:click={() => {
+					colorPaletteStore.set('violet');
+				}}
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-violet-600 dark:bg-violet-400"
+				class:ring-2={$colorPaletteStore === 'violet'}
+				class:ring-offset-2={$colorPaletteStore === 'violet'}
+				class:ring-violet-800={$colorPaletteStore === 'violet'}
+				class:dark:ring-violet-200={$colorPaletteStore === 'violet'}
+				title="Violet"
+			>
+			</button>
+			<button
+				on:click={() => {
+					colorPaletteStore.set('lime');
+				}}
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-lime-600 dark:bg-lime-400"
+				class:ring-2={$colorPaletteStore === 'lime'}
+				class:ring-offset-2={$colorPaletteStore === 'lime'}
+				class:ring-lime-800={$colorPaletteStore === 'lime'}
+				class:dark:ring-lime-200={$colorPaletteStore === 'lime'}
+				title="Lime"
+			>
+			</button>
+			<button
+				on:click={() => {
+					colorPaletteStore.set('orange');
+				}}
+				class="w-6 h-6 rounded-full hover:scale-110 transition-transform bg-orange-600 dark:bg-orange-400"
+				class:ring-2={$colorPaletteStore === 'orange'}
+				class:ring-offset-2={$colorPaletteStore === 'orange'}
+				class:ring-orange-800={$colorPaletteStore === 'orange'}
+				class:dark:ring-orange-200={$colorPaletteStore === 'orange'}
+				title="Orange"
+			>
+			</button>
+		</div>
+	</div>
+
+	<div>
+		<span class="block text-sm font-medium mb-2">Switch Theme</span>
+		{#if $themeStore === 'light'}
+			<button
+				class="px-6 py-2 rounded-lg font-medium transition-colors bg-blue-950 hover:bg-slate-900 text-slate-200 flex justify-between items-center"
+				on:click={() => themeStore.toggle()}
+			>
+				<span class="block me-2" style:width="86px">Dark Mode</span>
+				<Icon symbol="bi-moon-fill" classList="block text-yellow-200" />
+			</button>
+		{:else}
+			<button
+				class="px-6 py-2 rounded-lg font-medium transition-colors bg-slate-300 hover:bg-slate-100 text-zinc-900 flex justify-between items-center"
+				on:click={() => themeStore.toggle()}
+			>
+				<span class="block me-2" style:width="86px">Light Mode</span>
+				<Icon symbol="bi-sun-fill" classList="block text-yellow-600" />
+			</button>
+		{/if}
+	</div>
+
 	<!-- Actions -->
 </div>
 
@@ -131,10 +218,7 @@
 		<h2 class="text-xl font-bold">Edit Cards</h2>
 		<button
 			on:click={addCard}
-			class="px-4 py-2 text-white rounded-lg font-medium transition-colors"
-			style="background-color: var(--color-600);"
-			on:mouseenter={(e) => (e.target.style.backgroundColor = 'var(--color-700)')}
-			on:mouseleave={(e) => (e.target.style.backgroundColor = 'var(--color-600)')}
+			class="px-4 py-2 text-white rounded-lg font-medium transition-colors btn-secondary"
 		>
 			+ Add Card
 		</button>
@@ -170,10 +254,7 @@
 		<h2 class="text-xl font-bold">Edit Dynamic Commands</h2>
 		<button
 			on:click={addCommand}
-			class="px-4 py-2 text-white rounded-lg font-medium transition-colors"
-			style="background-color: var(--color-600);"
-			on:mouseenter={(e) => (e.target.style.backgroundColor = 'var(--color-700)')}
-			on:mouseleave={(e) => (e.target.style.backgroundColor = 'var(--color-600)')}
+			class="px-4 py-2 text-white rounded-lg font-medium transition-colors btn-secondary"
 		>
 			+ Add Command
 		</button>
