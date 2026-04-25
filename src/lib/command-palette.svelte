@@ -7,9 +7,12 @@
 	import type { DynamicCommand } from './types/home-layout';
 
 	type Command = { name: string; tag: string; command: () => void };
+	type Mode = 'command' | 'search';
 
 	const commands: Command[] = [];
 	const dynamicCommands: DynamicCommand[] = $storageStore.commands;
+	let mode: Mode = 'command';
+
 	onMount(() => {
 		$storageStore.cards.forEach((c) => {
 			c.links.forEach((l) => {
@@ -28,8 +31,17 @@
 
 		window.addEventListener('keydown', (e) => {
 			if (e.key === '/' && $page.url.pathname === base + '/') {
-				show = true;
-				inputEl?.focus();
+				if (!show) {
+					show = true;
+					mode = 'command';
+					inputEl?.focus();
+				} else {
+					mode = mode === 'command' ? 'search' : 'command';
+					selectedIndex = -1;
+					inputEl?.focus();
+					// Refresh results with current input in new mode
+					performSearch(inputEl.value);
+				}
 				e.preventDefault();
 				e.stopPropagation();
 			}
@@ -110,9 +122,30 @@
 		return null;
 	}
 
-	function search(e: Event) {
-		const directCmdMatch = getCommand((e.target as HTMLInputElement).value);
-		const searchResults = fuse.search((e.target as HTMLInputElement).value);
+	function performSearch(query: string) {
+		if (mode === 'search') {
+			// For search mode, we'll show a quick web search option
+			if (query.length > 0) {
+				results = [
+					{
+						name: `Search web for "${query}"`,
+						tag: 'search',
+						command: () => {
+							window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+						},
+						highlightedName: `Search web for "<span class="match">${query}</span>"`
+					}
+				];
+			} else {
+				results = [];
+			}
+			selectedIndex = results.length > 0 ? 0 : -1;
+			return;
+		}
+
+		// Command mode logic
+		const directCmdMatch = getCommand(query);
+		const searchResults = fuse.search(query);
 		results = searchResults.map((v) => {
 			const { item, matches } = v;
 			// make the matched parts of the name wrapped in a span.match element
@@ -139,6 +172,10 @@
 			results = [directCmdMatch, ...results];
 		}
 		selectedIndex = results.length > 0 ? 0 : -1;
+	}
+
+	function search(e: Event) {
+		performSearch((e.target as HTMLInputElement).value);
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
@@ -177,13 +214,40 @@
 	<div
 		class="shadow-xl search-container my-24 w-4/12 bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-white border border-zinc-400 dark:border-zinc-600 rounded-lg focus:border-zinc-400 dark:focus:border-zinc-500"
 	>
-		<input
-			type="text"
-			on:input={search}
-			on:keydown={handleKeydown}
-			class="bg-zinc-200 rounded-lg text-zinc-900 dark:bg-zinc-700 dark:text-white text-4xl placeholder-zinc-500 dark:placeholder-zinc-400 p-4 w-full focus:outline-none"
-			bind:this={inputEl}
-		/>
+		<div class="flex items-center px-4 py-4 gap-3">
+			{#if mode === 'search'}
+				<svg
+					class="flex-shrink-0 w-6 h-6 text-zinc-500 dark:text-zinc-400"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+					/>
+				</svg>
+			{:else}
+				<svg
+					class="flex-shrink-0 w-6 h-6 text-zinc-500 dark:text-zinc-400"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+			{/if}
+			<input
+				type="text"
+				on:input={search}
+				on:keydown={handleKeydown}
+				placeholder={mode === 'search' ? 'Search the web...' : 'Search commands...'}
+				class="bg-transparent text-zinc-900 dark:text-white text-2xl placeholder-zinc-500 dark:placeholder-zinc-400 w-full focus:outline-none"
+				bind:this={inputEl}
+			/>
+		</div>
 		{#if results.length > 0}
 			<div
 				class="results flex flex-col p-1 border-zinc-300 dark:border-zinc-600 border-t max-h-96 overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-white"
@@ -200,7 +264,7 @@
 					</button>
 				{/each}
 			</div>
-		{:else}
+		{:else if mode === 'command'}
 			<div class="px-1 text-zinc-600 dark:text-zinc-300 text-xs pb-1">
 				Available Commands:
 				{#each dynamicCommands as c}
@@ -244,10 +308,6 @@
 
 	:global(.dark .results button:not(.selected-result, :hover) .match) {
 		@apply text-zinc-300 font-semibold;
-	}
-
-	input {
-		line-height: 1.5 !important;
 	}
 
 	.results {
