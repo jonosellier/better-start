@@ -5,7 +5,6 @@
 	import HomeCard from '$lib/home-card.svelte';
 	import Greeter from '$lib/greeter.svelte';
 	import { base } from '$app/paths';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { initStorageStore, storageStore } from '$lib/stores/storage';
 	import CommandPalette from '$lib/command-palette.svelte';
@@ -23,7 +22,7 @@
 {#if $storageStore}
 	<div class="bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-white">
 		<div
-			class="flex flex-col items-center justify-center h-dvh mx-auto px-4"
+			class="flex flex-col items-center justify-center min-h-dvh mx-auto px-4 py-6"
 			style:max-width={`${$storageStore.cols * 17 + 4.5}rem`}
 		>
 			<Greeter data={$storageStore} />
@@ -45,11 +44,9 @@
 </div>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class="bg-black/40 dark:bg-black/40 backdrop-blur-lg w-full h-dvh fixed flex items-start justify-center top-0 py-14 duration-500 overflow-auto z-50"
 	class:closed={isHome}
-	on:click={() => goto(`${base}/`)}
 >
 	{#if loaded && !isHome}
 		<div class="mx-8 mb-10 duration-300 p-5">
