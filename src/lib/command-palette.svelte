@@ -131,7 +131,7 @@
 						name: `Search web for "${query}"`,
 						tag: 'search',
 						command: () => {
-							window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+							window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
 						},
 						highlightedName: `Search web for "<span class="match">${query}</span>"`
 					}
