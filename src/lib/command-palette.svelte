@@ -1,17 +1,23 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { storageStore } from '$lib/stores/storage';
+	import {
+		openDirectLink,
+		resolvePaletteMode,
+		searchWeb
+	} from '$lib/search-navigation';
 	import Fuse from 'fuse.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import type { DynamicCommand } from './types/home-layout';
 
 	type Command = { name: string; tag: string; command: () => void };
-	type Mode = 'command' | 'search';
+	type Mode = 'command' | 'search' | 'direct-link';
 
 	const commands: Command[] = [];
 	const dynamicCommands: DynamicCommand[] = $storageStore.commands;
 	let mode: Mode = 'command';
+	let previousMode: Mode = 'command';
 
 	onMount(() => {
 		$storageStore.cards.forEach((c) => {
@@ -50,6 +56,25 @@
 				inputEl?.blur();
 				inputEl.value = '';
 			}
+		});
+
+		window.addEventListener('paste', (e) => {
+			if ($page.url.pathname !== base + '/') {
+				return;
+			}
+
+			const pasted = e.clipboardData?.getData('text')?.trim();
+			if (!pasted) {
+				return;
+			}
+
+			e.preventDefault();
+			e.stopPropagation();
+			show = true;
+			mode = 'command';
+			inputEl.value = pasted;
+			inputEl.focus();
+			performSearch(pasted);
 		});
 	});
 
@@ -123,6 +148,24 @@
 	}
 
 	function performSearch(query: string) {
+		const resolution = resolvePaletteMode(query, mode, previousMode);
+		mode = resolution.mode;
+		previousMode = resolution.previousMode;
+
+		if (mode === 'direct-link') {
+			const trimmedQuery = query.trim();
+			results = [
+				{
+					name: `Open ${trimmedQuery}`,
+					tag: 'direct-link',
+					command: () => openDirectLink(trimmedQuery),
+					highlightedName: `Open <span class="match">${trimmedQuery}</span>`
+				}
+			];
+			selectedIndex = 0;
+			return;
+		}
+
 		if (mode === 'search') {
 			// For search mode, we'll show a quick web search option
 			if (query.length > 0) {
@@ -130,9 +173,7 @@
 					{
 						name: `Search web for "${query}"`,
 						tag: 'search',
-						command: () => {
-							window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
-						},
+						command: () => searchWeb(query),
 						highlightedName: `Search web for "<span class="match">${query}</span>"`
 					}
 				];
@@ -229,6 +270,20 @@
 						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 					/>
 				</svg>
+			{:else if mode === 'direct-link'}
+				<svg
+					class="flex-shrink-0 w-6 h-6 text-zinc-500 dark:text-zinc-400"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6v6M10 14L20 4"
+					/>
+				</svg>
 			{:else}
 				<svg
 					class="flex-shrink-0 w-6 h-6 text-zinc-500 dark:text-zinc-400"
@@ -243,7 +298,7 @@
 				type="text"
 				on:input={search}
 				on:keydown={handleKeydown}
-				placeholder={mode === 'search' ? 'Search the web...' : 'Search commands...'}
+				placeholder={mode === 'search' ? 'Search the web...' : mode === 'direct-link' ? 'Open direct link...' : 'Search commands...'}
 				class="bg-transparent text-zinc-900 dark:text-white text-2xl placeholder-zinc-500 dark:placeholder-zinc-400 w-full focus:outline-none"
 				bind:this={inputEl}
 			/>
