@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { storageStore } from '$lib/stores/storage';
-	import {
-		openDirectLink,
-		resolvePaletteMode,
-		searchWeb
-	} from '$lib/search-navigation';
+	import { openDirectLink, resolvePaletteMode, searchWeb } from '$lib/search-navigation';
 	import Fuse from 'fuse.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
@@ -72,9 +68,12 @@
 			e.stopPropagation();
 			show = true;
 			mode = 'command';
-			inputEl.value = pasted;
+			const start = inputEl.selectionStart ?? inputEl.value.length;
+			const end = inputEl.selectionEnd ?? start;
+			inputEl.value = inputEl.value.slice(0, start) + pasted + inputEl.value.slice(end);
+			inputEl.setSelectionRange(start + pasted.length, start + pasted.length);
 			inputEl.focus();
-			performSearch(pasted);
+			performSearch(inputEl.value);
 		});
 	});
 
@@ -298,7 +297,11 @@
 				type="text"
 				on:input={search}
 				on:keydown={handleKeydown}
-				placeholder={mode === 'search' ? 'Search the web...' : mode === 'direct-link' ? 'Open direct link...' : 'Search commands...'}
+				placeholder={mode === 'search'
+					? 'Search the web...'
+					: mode === 'direct-link'
+						? 'Open direct link...'
+						: 'Search commands...'}
 				class="bg-transparent text-zinc-900 dark:text-white text-2xl placeholder-zinc-500 dark:placeholder-zinc-400 w-full focus:outline-none"
 				bind:this={inputEl}
 			/>
